@@ -17,7 +17,7 @@ subtitle:
   effect: true
   source: false
   sub:
-    - "微电子科学与工程 · 2026 级"
+    - "广东工业大学 · 微电子科学与工程专业"
     - "从 C 语言到单片机，持续动手实践"
     - "探索集成电路与硬件开发的世界"
 
@@ -35,7 +35,7 @@ search:
 aside:
   card_author:
     enable: true
-    description: 微电子科学与工程 2026 级｜探索代码与硬件的交汇处
+    description: 广东工业大学｜微电子科学与工程专业 2026 级｜探索代码与硬件的交汇处
     button:
       enable: false
   card_announcement:
