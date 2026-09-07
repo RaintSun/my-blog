@@ -10,6 +10,8 @@ avatar:
   img: /img/avatar.jpg
   effect: true
 
+index_img: /img/home-bg.jpg
+
 subtitle:
   enable: true
   effect: true
