@@ -1,0 +1,7 @@
+- class_name: 朋友们
+  class_desc: 一起记录，一起成长
+  link_list:
+    - name: Miizhu的博客
+      link: https://miizhu.github.io/
+      avatar: https://cdn.jsdelivr.net/gh/Miizhu/picgo@main/images/user.jpg
+      descr: 学习记录与个人疑难解决路径

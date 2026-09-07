@@ -1,0 +1,47 @@
+menu:
+  首页: / || fas fa-home
+  时间线: /archives/ || fas fa-clock
+  分类: /categories/ || fas fa-folder-open
+  标签: /tags/ || fas fa-tags
+  友链: /links/ || fas fa-link
+  关于我: /about/ || fas fa-user
+
+avatar:
+  img: /img/avatar.jpg
+  effect: true
+
+subtitle:
+  enable: true
+  effect: true
+  source: false
+  sub:
+    - "微电子科学与工程 · 2026 级"
+    - "从 C 语言到单片机，持续动手实践"
+    - "探索集成电路与硬件开发的世界"
+
+search:
+  use: local_search
+  placeholder: 搜索文章、分类或标签
+  local_search:
+    preload: false
+    top_n_per_article: 3
+    unescape: true
+    pagination:
+      enable: true
+      hitsPerPage: 8
+
+aside:
+  card_author:
+    enable: true
+    description: 微电子科学与工程 2026 级｜探索代码与硬件的交汇处
+    button:
+      enable: false
+  card_announcement:
+    enable: true
+    content: 正在学习基础电路与单片机，欢迎一起交流、一起进步。
+
+footer:
+  owner:
+    enable: true
+    since: 2026
+  custom_text: 从代码到电路，记录每一次动手实践

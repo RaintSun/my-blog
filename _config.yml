@@ -70,6 +70,13 @@ default_category: uncategorized
 category_map:
 tag_map:
 
+# Local search index
+search:
+  path: search.json
+  field: all
+  content: true
+  format: html
+
 # Metadata elements
 ## https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
 meta_generator: true
