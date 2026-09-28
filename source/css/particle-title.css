@@ -1,0 +1,272 @@
+/*!
+ * particle-title.css — 《谭云阳的学习笔记》发光粒子标题
+ * 与 source/js/particle-title.js 配套；只在首页横幅生效。
+ */
+
+/* ==========================================================================
+   1. 舞台遮罩
+   横幅背景图是亮色调（蓝白插画），而粒子用加色混合「发光」，
+   必须有深色底才透得出来。这里只压暗标题所在的中心区域，
+   四周保留原图亮度，自然形成暗角，不会把整张图盖死。
+   ========================================================================== */
+.pt-scrim {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(122% 76% at 50% var(--pt-title-y, 43%),
+      rgba(5, 11, 28, 0.5) 0%,
+      rgba(5, 11, 28, 0.4) 30%,
+      rgba(5, 11, 28, 0.21) 56%,
+      rgba(5, 11, 28, 0.06) 79%,
+      rgba(5, 11, 28, 0) 100%),
+    linear-gradient(180deg,
+      rgba(4, 9, 22, 0.18) 0%,
+      rgba(4, 9, 22, 0.04) 46%,
+      rgba(4, 9, 22, 0.22) 100%);
+  animation: pt-scrim-in 1.3s ease-out both;
+}
+
+@keyframes pt-scrim-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ==========================================================================
+   2. 粒子画布
+   ========================================================================== */
+.pt-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  display: block;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   3. 原标题：视觉隐藏但保留布局与可访问性
+   #site-info 在主题里是 position:absolute / top:43%，只能加 z-index，
+   绝对不能改成 relative，否则 43% 会变成相对偏移把标题推走。
+   ========================================================================== */
+.pt-host {
+  isolation: isolate;           /* 把内部层级限制在横幅内 */
+}
+
+.pt-host #site-info {
+  z-index: 3;                   /* 副标题始终压在粒子之上，保持清晰 */
+}
+
+.pt-host #site-title.pt-title-hidden {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+}
+
+/* 副标题由 JS 精确挪到粒子标题下方（--pt-sub-shift 由 layout() 算出），
+   这样「大字标题 + 副标题」整块仍居中在主题原本的位置上 */
+.pt-host #site-subtitle {
+  margin-top: var(--pt-sub-shift, 0px);
+}
+
+/* ==========================================================================
+   4. 控制条：配色 + 炸开 + 重组
+   ========================================================================== */
+.pt-ui {
+  position: absolute;
+  left: 50%;
+  bottom: max(54px, 7%);
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(9, 15, 32, 0.34);
+  box-shadow:
+    0 10px 34px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  -webkit-backdrop-filter: blur(13px) saturate(150%);
+  backdrop-filter: blur(13px) saturate(150%);
+  font-family: "Noto Sans SC", "Source Han Sans SC", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  opacity: 0;
+  transform: translateX(-50%) translateY(9px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.pt-ui.is-in {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* 横幅快滚出视野时淡下去，把注意力还给正文 */
+.pt-ui.is-dim {
+  opacity: 0.3;
+}
+
+/* 注意顺序：hover 要写在 is-dim 之后才能生效 */
+.pt-ui:hover,
+.pt-ui:focus-within {
+  opacity: 1;
+}
+
+/* -------------------------------------------------------------- 配色圆点 */
+.pt-swatches {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.pt-swatch {
+  position: relative;
+  display: block;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pt-c1) 0%, var(--pt-c2) 55%, var(--pt-c3) 100%);
+  box-shadow: inset 0 0 7px rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: transform 0.22s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.pt-swatch:hover {
+  transform: scale(1.18);
+}
+
+.pt-swatch.is-active {
+  border-color: #fff;
+  transform: scale(1.1);
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.9),
+    0 0 15px var(--pt-c1),
+    inset 0 0 7px rgba(255, 255, 255, 0.6);
+}
+
+.pt-sep {
+  width: 1px;
+  height: 20px;
+  margin: 0 2px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ---------------------------------------------------------------- 按钮 */
+.pt-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 13px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  transition: background 0.22s ease, border-color 0.22s ease,
+    box-shadow 0.25s ease, transform 0.12s ease;
+}
+
+.pt-btn svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
+.pt-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.pt-btn:active {
+  transform: scale(0.95);
+}
+
+.pt-btn:focus-visible,
+.pt-swatch:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* 「炸开」用暖色渐变，视觉上更像一个引信 */
+.pt-btn-boom {
+  border-color: rgba(255, 186, 150, 0.55);
+  background: linear-gradient(135deg, rgba(255, 84, 138, 0.5), rgba(255, 168, 74, 0.46));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.pt-btn-boom:hover {
+  border-color: rgba(255, 208, 180, 0.85);
+  background: linear-gradient(135deg, rgba(255, 110, 158, 0.66), rgba(255, 186, 96, 0.6));
+  box-shadow: 0 0 20px rgba(255, 126, 156, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+/* ==========================================================================
+   5. 自适应
+   ========================================================================== */
+@media (max-width: 768px) {
+  .pt-ui {
+    bottom: max(46px, 6%);
+    gap: 7px;
+    padding: 6px 9px;
+  }
+
+  .pt-swatch {
+    width: 19px;
+    height: 19px;
+  }
+
+  .pt-btn {
+    height: 28px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+
+  .pt-btn svg {
+    width: 13px;
+    height: 13px;
+  }
+}
+
+@media (max-width: 400px) {
+  .pt-btn span {
+    display: none;           /* 太窄时只留图标 */
+  }
+
+  .pt-btn {
+    padding: 0 9px;
+  }
+}
+
+/* 矮屏（手机横屏）：控制条上移一点，避免压住滚动箭头 */
+@media (max-height: 560px) {
+  .pt-ui {
+    bottom: max(30px, 5%);
+  }
+}
+
+/* 用户要求减少动效时，去掉进场动画 */
+@media (prefers-reduced-motion: reduce) {
+  .pt-scrim {
+    animation: none;
+  }
+
+  .pt-ui {
+    transition: none;
+  }
+}

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>粒子标题预览 · 谭云阳的学习笔记</title>
+<link rel="stylesheet" href="source/css/particle-title.css">
+<style>
+  /* ------------------------------------------------------------------
+     这里只是**模拟** Butterfly 5.7 首页横幅的排版环境，
+     方便直接双击本文件预览粒子标题效果，不参与线上站点构建。
+     真实站点由源码注入（scripts/particle-title-inject.js）自动挂载。
+     ------------------------------------------------------------------ */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #f5f7fa;
+    color: #4c4948;
+    font: 16px/1.6 "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  }
+
+  /* #page-header —— 与主题一致：relative + 100vh + fixed 背景 + 0.3 黑色遮罩 */
+  #page-header {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-color: #49b1f5;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  #page-header:not(.not-top-img):before {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    content: '';
+  }
+
+  /* #site-info —— top: 43%，绝对定位 */
+  #page-header.full_page #site-info {
+    position: absolute;
+    top: 43%;
+    padding: 0 10px;
+    width: 100%;
+  }
+  #page-header #site-title,
+  #page-header #site-subtitle {
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+    line-height: 1.5;
+  }
+  #page-header #site-title { margin: 0; color: #fff; font-size: 2.85em; }
+  #page-header #site-subtitle { color: #eee; font-size: 1.72em; }
+
+  /* 与主题一致的移动端字号，保证预览与线上表现接近 */
+  @media (max-width: 768px) {
+    #nav { padding: 0 16px; }
+    #page-header #site-title { font-size: 1.85em; }
+    #page-header #site-subtitle { font-size: 1.15em; }
+  }
+
+  /* #nav —— z-index 90，压在一切之上 */
+  #nav {
+    position: absolute;
+    top: 0;
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    padding: 0 36px;
+    width: 100%;
+    height: 60px;
+    font-size: 1.3em;
+  }
+  #nav a { color: #eee; text-decoration: none; }
+  #nav .site-name { font-weight: bold; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15); }
+  #nav .menus { margin-left: auto; display: flex; gap: 18px; font-size: 0.78em; }
+
+  /* #scroll-down */
+  #scroll-down {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    color: #eee;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  /* 下方正文，用来看横幅与内容的衔接 */
+  main { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+  main h2 { margin: 0 0 8px; font-size: 22px; color: #2b2b2b; }
+  main p { color: #6b7280; }
+  .card {
+    margin-top: 18px; padding: 20px 22px; border-radius: 10px;
+    background: #fff; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  /* 预览用的提示条（线上不存在） */
+  .preview-hint {
+    position: fixed; right: 14px; bottom: 14px; z-index: 999;
+    padding: 8px 14px; border-radius: 999px;
+    background: rgba(0, 0, 0, 0.6); color: #fff;
+    font-size: 12px; letter-spacing: 0.03em;
+    backdrop-filter: blur(8px);
+  }
+</style>
+</head>
+<body>
+
+<header id="page-header" class="full_page" style="background-image:url('source/img/home-bg.jpg')">
+  <nav id="nav">
+    <a class="site-name" href="#">谭云阳的学习笔记</a>
+    <span class="menus">
+      <a href="#">首页</a><a href="#">时间线</a><a href="#">分类</a>
+      <a href="#">标签</a><a href="#">友链</a><a href="#">关于我</a>
+    </span>
+  </nav>
+
+  <div id="site-info">
+    <h1 id="site-title">谭云阳的学习笔记</h1>
+    <div id="site-subtitle"><span id="subtitle">广东工业大学 · 微电子科学与工程专业</span></div>
+  </div>
+
+  <div id="scroll-down">⌄</div>
+</header>
+
+<main>
+  <div class="card">
+    <h2>从这里出发：我的微电子学习之路</h2>
+    <p>预览页正文，用于确认横幅与内容区的衔接。真实站点会渲染你的文章列表。</p>
+  </div>
+</main>
+
+<div class="preview-hint">本地预览 · 移动鼠标 / 点击横幅 / 按 E 炸开</div>
+
+<script>
+  /* 告诉引擎标题内容，与 _config.yml 的 title 保持一致 */
+  window.__PARTICLE_TITLE__ = { title: '谭云阳的学习笔记' };
+
+  /* 预览辅助：?explode=2200 表示第 2.2 秒自动炸开（方便截图 / 演示） */
+  (function () {
+    var m = /[?&]explode=(\d+)/.exec(location.search);
+    if (!m) return;
+    var delay = parseInt(m[1], 10) || 2000;
+    setTimeout(function () {
+      if (window.__particleTitle) window.__particleTitle.explode(1);
+    }, delay);
+  })();
+</script>
+<script>
+  /* 预览专用诊断：?diag=1 时把画布像素统计/UI 状态写进 DOM，便于无头浏览器核对 */
+  (function () {
+    if (!/[?&]diag=1/.test(location.search)) return;
+    var frames = 0;
+    (function count() { frames++; requestAnimationFrame(count); })();
+    var errors = [];
+    window.addEventListener('error', function (e) { errors.push(String(e.message)); });
+    setTimeout(function () {
+      var L = [];
+      L.push('frames=' + frames);
+      L.push('errors=' + JSON.stringify(errors));
+      var c = document.querySelector('.pt-canvas');
+      if (c) {
+        var g = c.getContext('2d');
+        var W = c.width, H = c.height;
+        var d = g.getImageData(0, 0, W, H).data;
+        var minX = 1e9, minY = 1e9, maxX = -1, maxY = -1, mass = 0, lit = 0, sx = 0, sy = 0;
+        for (var y = 0; y < H; y++) {
+          for (var x = 0; x < W; x++) {
+            var a = d[(y * W + x) * 4 + 3];
+            if (a > 8) {
+              lit++; mass += a; sx += x * a; sy += y * a;
+              if (x < minX) minX = x; if (x > maxX) maxX = x;
+              if (y < minY) minY = y; if (y > maxY) maxY = y;
+            }
+          }
+        }
+        L.push('canvas=' + W + 'x' + H);
+        L.push('lit=' + lit + ' mass=' + mass);
+        L.push('bbox=' + [minX, minY, maxX, maxY].join(','));
+        L.push('centroid=' + (mass ? (sx / mass).toFixed(1) + ',' + (sy / mass).toFixed(1) : 'n/a'));
+      } else { L.push('canvas=MISSING'); }
+      var ui = document.querySelector('.pt-ui');
+      if (ui) {
+        var cs = getComputedStyle(ui), r = ui.getBoundingClientRect();
+        L.push('ui opacity=' + cs.opacity + ' rect=' +
+          [(r.left | 0), (r.top | 0), (r.width | 0), (r.height | 0)].join(','));
+      } else { L.push('ui=MISSING'); }
+      var t = document.getElementById('site-title');
+      if (t) { var tr = t.getBoundingClientRect(); L.push('title=' + [(tr.left | 0), (tr.top | 0), (tr.width | 0), (tr.height | 0)].join(',')); }
+      var s = document.getElementById('site-subtitle');
+      if (s) { var sr = s.getBoundingClientRect(); L.push('subtitle=' + [(sr.left | 0), (sr.top | 0), (sr.width | 0), (sr.height | 0)].join(',')); }
+      var pre = document.createElement('pre');
+      pre.id = 'pt-diag';
+      pre.textContent = 'DIAG>>> ' + L.join(' | ') + ' <<<';
+      document.body.appendChild(pre);
+    }, 3000);
+  })();
+</script>
+<script src="source/js/particle-title.js"></script>
+</body>
+</html>
