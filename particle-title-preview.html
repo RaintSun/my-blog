@@ -133,19 +133,16 @@
   </div>
 </main>
 
-<div class="preview-hint">本地预览 · 移动鼠标 / 点击横幅 / 按 E 炸开</div>
+<div class="preview-hint">本地预览 · 10,000 个粒子 · 移动鼠标 / 切换配色 / 点击炸开</div>
 
 <script>
-  /* 告诉引擎标题内容，与 _config.yml 的 title 保持一致 */
-  window.__PARTICLE_TITLE__ = { title: '谭云阳的学习笔记' };
-
   /* 预览辅助：?explode=2200 表示第 2.2 秒自动炸开（方便截图 / 演示） */
   (function () {
     var m = /[?&]explode=(\d+)/.exec(location.search);
     if (!m) return;
     var delay = parseInt(m[1], 10) || 2000;
     setTimeout(function () {
-      if (window.__particleTitle) window.__particleTitle.explode(1);
+      document.querySelector('.particle-title-burst')?.click();
     }, delay);
   })();
 </script>
@@ -161,7 +158,7 @@
       var L = [];
       L.push('frames=' + frames);
       L.push('errors=' + JSON.stringify(errors));
-      var c = document.querySelector('.pt-canvas');
+      var c = document.querySelector('.particle-title canvas');
       if (c) {
         var g = c.getContext('2d');
         var W = c.width, H = c.height;
@@ -182,7 +179,7 @@
         L.push('bbox=' + [minX, minY, maxX, maxY].join(','));
         L.push('centroid=' + (mass ? (sx / mass).toFixed(1) + ',' + (sy / mass).toFixed(1) : 'n/a'));
       } else { L.push('canvas=MISSING'); }
-      var ui = document.querySelector('.pt-ui');
+      var ui = document.querySelector('.particle-title-controls');
       if (ui) {
         var cs = getComputedStyle(ui), r = ui.getBoundingClientRect();
         L.push('ui opacity=' + cs.opacity + ' rect=' +
